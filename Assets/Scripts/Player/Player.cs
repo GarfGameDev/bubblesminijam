@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour, IDamageable
 {
@@ -10,11 +11,12 @@ public class Player : MonoBehaviour, IDamageable
     private bool _canFireHoming = false;
     [SerializeField]
     private int _health = 3;
+    [SerializeField]
+    private Image _healthBar;
     private CharacterController _playerController;
     private Camera _mainCamera;
 
-    [SerializeField]
-    private float _cameraSensitivity = 2.0f;
+    public float _cameraSensitivity = 2.0f;
 
     [SerializeField]
     private float _fireRate = 0.5f;
@@ -31,7 +33,10 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField]
     private GameObject _bubbleContainer;
     private SpawnManager _spawnManager;
+    private UIManager _uiManager;
     private Animator _anim;
+    
+
 
     void Start()
     {
@@ -46,7 +51,14 @@ public class Player : MonoBehaviour, IDamageable
 
         if (_spawnManager == null)
         {
-            Debug.Log("The Spawn Manager is null");
+            Debug.LogError("The Spawn Manager is null");
+        }
+
+        _uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+
+        if (_uiManager == null)
+        {
+            Debug.LogError("The UI Manager is null");
         }
 
         _mainCamera = Camera.main;
@@ -63,19 +75,20 @@ public class Player : MonoBehaviour, IDamageable
             Debug.Log("The animator is null");
         }
 
-        Cursor.lockState = CursorLockMode.Locked;
+        _cameraSensitivity = ScoreStats.MouseSensitivity;
     }
    
    
     void Update()
     {
+
         CameraController();
         Movement();
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+        // if (Input.GetKeyDown(KeyCode.Escape))
+        // {
+        //     Cursor.lockState = CursorLockMode.Locked;
+        // }
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire)
         {
@@ -90,6 +103,7 @@ public class Player : MonoBehaviour, IDamageable
             _canFireHoming = false;
             Instantiate(_homingBubble, transform.position, transform.localRotation);        
         }
+        
 
     }
 
@@ -109,15 +123,9 @@ public class Player : MonoBehaviour, IDamageable
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
 
-        //transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y + mouseX, transform.localEulerAngles.z);
-
         Vector3 currentRotation = transform.localEulerAngles;
         currentRotation.y += mouseX * _cameraSensitivity;
         transform.localRotation = Quaternion.AngleAxis(currentRotation.y, Vector3.up);
-
-        // Vector3 currentCameraRotation = _mainCamera.gameObject.transform.localEulerAngles;
-        // currentCameraRotation.x -= mouseY;
-        // _mainCamera.gameObject.transform.localRotation = currentCameraRotation;
         
     }
 
@@ -133,9 +141,12 @@ public class Player : MonoBehaviour, IDamageable
             _anim.SetTrigger("Hit");
             StartCoroutine(InvincibleRoutine());
             _health--;
+            _healthBar.fillAmount -= 0.1f;
             
             if (_health < 1)
             {
+                _uiManager.GameOverScreen();
+                _spawnManager.PlayerDestroyed();
                 Destroy(this.gameObject);
             }
         }
@@ -194,15 +205,31 @@ public class Player : MonoBehaviour, IDamageable
         _fireRate += 0.05f;
     }
 
+    public void PermanentIncrease()
+    {
+        if (_totalCount < 5)
+        {
+            _speed += 0.4f;
+            _fireRate -= 0.05f;
+        }
+    }
+
     public void HealPlayer()
     {
         _spawnManager.ReducePowerUpCount();
-        if (_health < 9)
+        if (_health < 10)
         {
             _health += 3;
-            if (_health > 9)
+            
+            if (_health > 10)
             {
-                _health = 9;
+                _health = 10;
+                _healthBar.fillAmount = 1.0f;
+            }
+
+            else 
+            {
+                _healthBar.fillAmount += 0.3f;
             }
         }
     }

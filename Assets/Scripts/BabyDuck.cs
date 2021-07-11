@@ -13,10 +13,12 @@ public class BabyDuck : MonoBehaviour
     private float _babyDuckDistance;
     private int _count;
     private int _id;
+    private int score = 200;
     private GameObject _babyDuck;
     private GameObject _centre;
     private GameObject _duckContainer;
     private SpawnManager _spawnManager;
+    private UIManager _uiManager;
     
 
     private void Start()
@@ -29,10 +31,19 @@ public class BabyDuck : MonoBehaviour
         }
 
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        
         if (_spawnManager == null) 
         {
             Debug.LogError("Spawn Manager is null");
         }
+
+        _uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+
+        if (_uiManager == null)
+        {
+            Debug.LogError("The UI Manager is null");
+        }
+            
     }
 
     private void OnTriggerEnter(Collider other)
@@ -65,7 +76,7 @@ public class BabyDuck : MonoBehaviour
 
 
             playerComponent.ReduceSpeed();
-            Debug.Log(_count);
+            //Debug.Log(_count);
             
 
             _collected = true;
@@ -80,7 +91,9 @@ public class BabyDuck : MonoBehaviour
             player.ReduceFollowCount();
             _count = player.FollowCount();
             player.IncreaseSpeed();
+            player.PermanentIncrease();
             _spawnManager.ReduceDuckCount();
+            _uiManager.UpdateScore(score);
 
             _collected = false;
             _safe = true;
@@ -114,8 +127,12 @@ public class BabyDuck : MonoBehaviour
         {
             if (_playerDistance > 1.7f && _count == 1)
             {
-                transform.position = Vector3.MoveTowards(transform.position, _player.position, _speed * Time.deltaTime);
-                transform.LookAt(_player.position);
+                if (_player != null) 
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, _player.position, _speed * Time.deltaTime);
+                    transform.LookAt(_player.position);
+                }
+
             }
 
             else if (_babyDuckDistance > 1.7f && _count > 1)
@@ -142,7 +159,11 @@ public class BabyDuck : MonoBehaviour
         {
             if (_count == 1)
             {
-                _playerDistance = Vector3.Distance(_player.position, transform.position);
+                if (_player != null)
+                {
+                    _playerDistance = Vector3.Distance(_player.position, transform.position);
+                }
+                
             }
             else if (_count > 1)
             {

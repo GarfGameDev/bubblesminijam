@@ -17,6 +17,7 @@ public class Boat : Enemy, IDamageable
         if (health < 1)
         {
             spawnManager.ReduceBoatCount();
+            uIManager.UpdateScore(score);
             Destroy(this.gameObject);
         }
     }

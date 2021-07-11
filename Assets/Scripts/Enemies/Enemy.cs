@@ -7,9 +7,9 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField]
     protected int health;
     [SerializeField]
-    protected int points;
-    [SerializeField]
     protected float speed;
+    [SerializeField]
+    protected int score;
     [SerializeField]
     protected float fireRate = 0.5f;
     protected float nextFire;
@@ -18,12 +18,29 @@ public abstract class Enemy : MonoBehaviour
     protected GameObject bullet;
 
     protected SpawnManager spawnManager;
+    protected UIManager uIManager;
     protected Player player;
 
     public virtual void Init() 
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        if (GameObject.FindGameObjectWithTag("Player").GetComponent<Player>() != null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        }
+
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+
+        if (spawnManager == null)
+        {
+            Debug.LogError("The Spawn Manager is null");
+        }
+
+        uIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+
+        if (uIManager == null)
+        {
+            Debug.LogError("The UI Manager is null");
+        }
     }
 
     private void Start() 
@@ -33,8 +50,11 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void Update() 
     {
-        FireBullets();
-        Movement();
+        if (player != null)
+        {
+            FireBullets();
+            Movement();
+        }
     }
 
     public virtual void Movement()

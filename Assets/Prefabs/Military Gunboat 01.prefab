@@ -110,8 +110,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 2
-  points: 0
   speed: 0
+  score: 30
   fireRate: 3.5
   bullet: {fileID: 5179020333331556606, guid: 3eccfd5a7fd7eb349800febcaea4a597, type: 3}
 --- !u!54 &1029224236804696911

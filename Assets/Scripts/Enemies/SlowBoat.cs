@@ -13,16 +13,20 @@ public class SlowBoat : Enemy, IDamageable
     
     public override void Movement()
     {
-        if (_rotateRight == true)
+        if (player != null)
         {
-            transform.RotateAround(player.transform.position, Vector3.up, 5 * Time.deltaTime);
+            if (_rotateRight == true)
+            {
+                transform.RotateAround(player.transform.position, Vector3.up, 5 * Time.deltaTime);
+            }
+            else
+            {
+                transform.RotateAround(player.transform.position, Vector3.up, -5 * Time.deltaTime);
+            }
+            
+            transform.LookAt(player.transform.position);
         }
-        else
-        {
-            transform.RotateAround(player.transform.position, Vector3.up, -5 * Time.deltaTime);
-        }
-        
-        transform.LookAt(player.transform.position);
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -40,6 +44,7 @@ public class SlowBoat : Enemy, IDamageable
         if (health < 1)
         {
             spawnManager.ReduceSlowBoatCount();
+            uIManager.UpdateScore(score);
             Destroy(this.gameObject);
         }
     }

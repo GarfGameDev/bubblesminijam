@@ -111,5 +111,6 @@ MonoBehaviour:
   health: 1
   points: 0
   speed: 2.91
+  score: 20
   fireRate: 1.1
   bullet: {fileID: 1143006954532023673, guid: 81bb418fe57718145bc5e76fffa19426, type: 3}

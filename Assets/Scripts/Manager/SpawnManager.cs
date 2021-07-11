@@ -20,19 +20,25 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject[] _powerups;
     private int _powerupCount;
+    private bool _playerAlive = true;
 
-    public void StartGame() 
-    {
-        StartCoroutine(SpawnBoatRoutine());
-        StartCoroutine(SpawnSlowBoatRoutine());
-    }
+
+    // public void StartGame() 
+    // {
+    //     StartCoroutine(SpawnBabyDuck());
+    //     StartCoroutine(SpawnBoatRoutine());
+    //     StartCoroutine(SpawnSlowBoatRoutine());
+    //     StartCoroutine(SpawnPowerupRoutine());
+    // }
 
     public void Start() 
     {
+
         StartCoroutine(SpawnBabyDuck());
         StartCoroutine(SpawnBoatRoutine());
         StartCoroutine(SpawnSlowBoatRoutine());
         StartCoroutine(SpawnPowerupRoutine());
+        
     }
 
     // Update is called once per frame
@@ -43,7 +49,7 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnBoatRoutine()
     {
-        while (true) 
+        while (_playerAlive == true) 
         {
             if (_boatCount < 20)
             {
@@ -64,7 +70,7 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnSlowBoatRoutine()
     {
-        while (true) 
+        while (_playerAlive == true) 
         {
             if (_slowBoatCount < 20)
             {
@@ -85,7 +91,7 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnBabyDuck()
     {
-        while (true) 
+        while (_playerAlive == true) 
         {
             if (_babyDuckCount < 5)
             {
@@ -107,7 +113,7 @@ public class SpawnManager : MonoBehaviour
                 
                 _babyDuckCount++;
                 _totalCount++;
-                if (_totalCount < 15)
+                if (_totalCount < 20)
                 {
                     _slowBoatSpawnRate -= 0.4f;
                     _boatSpawnRate -= 0.2f;
@@ -127,7 +133,7 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnPowerupRoutine()
     {
-        while (true) 
+        while (_playerAlive == true) 
         {
             yield return new WaitForSeconds(5.0f);
             if (_powerupCount < 2)
@@ -183,5 +189,10 @@ public class SpawnManager : MonoBehaviour
         {
             _slowBoatCount--;
         }
+    }
+
+    public void PlayerDestroyed()
+    {
+        _playerAlive = false;
     }
 }
