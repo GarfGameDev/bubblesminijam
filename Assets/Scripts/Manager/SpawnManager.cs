@@ -54,7 +54,7 @@ public class SpawnManager : MonoBehaviour
             if (_boatCount < 20)
             {
                 yield return new WaitForSeconds(_boatSpawnRate);
-                Vector3 position = new Vector3(Random.Range(-58.0f, 58.0f), -1.7f, Random.Range(-22.0f, 28.0f));
+                Vector3 position = new Vector3(Random.Range(-58.0f, 58.0f), -1.7f, Random.Range(-17.0f, 28.0f));
                 Instantiate(_boat, position, Quaternion.identity);
                 _boatCount++;
             }
@@ -75,7 +75,7 @@ public class SpawnManager : MonoBehaviour
             if (_slowBoatCount < 20)
             {
                 yield return new WaitForSeconds(_slowBoatSpawnRate);
-                Vector3 position = new Vector3(Random.Range(-58.0f, 58.0f), -1.6f, Random.Range(-22.0f, 28.0f));
+                Vector3 position = new Vector3(Random.Range(-58.0f, 58.0f), -1.6f, Random.Range(-17.0f, 28.0f));
                 Instantiate(_slowBoat, position, Quaternion.identity);
                 _slowBoatCount++;
             }
@@ -100,12 +100,12 @@ public class SpawnManager : MonoBehaviour
 
                 if (randomSide > 0.5)
                 {
-                    Vector3 position = new Vector3(Random.Range(-50.0f, -16.0f), -0.05f, Random.Range(-20.0f, 22.0f));
+                    Vector3 position = new Vector3(Random.Range(-50.0f, -16.0f), -0.05f, Random.Range(-17.0f, 22.0f));
                     Instantiate(_babyDucks[randomDuck], position, Quaternion.identity);
                 }
                 else if (randomSide <= 0.5)
                 {
-                    Vector3 position = new Vector3(Random.Range(15.0f, 56.0f), -0.05f, Random.Range(-20.0f, 22.0f));
+                    Vector3 position = new Vector3(Random.Range(15.0f, 56.0f), -0.05f, Random.Range(-17.0f, 22.0f));
                     Instantiate(_babyDucks[randomDuck], position, Quaternion.identity);
                 }
 
@@ -139,13 +139,13 @@ public class SpawnManager : MonoBehaviour
             if (_powerupCount < 2)
             {
                 _powerupCount++;
-                Vector3 position = new Vector3(Random.Range(-50.0f, 50.0f), -0.18f, Random.Range(-20.0f, 22.0f));
+                Vector3 position = new Vector3(Random.Range(-50.0f, 50.0f), -0.18f, Random.Range(-17.0f, 22.0f));
                 float randomNumber = Random.value;
-                if (randomNumber < 0.3f)
+                if (randomNumber < 0.2f)
                 {
                     Instantiate(_powerups[1], position, Quaternion.identity);
                 }
-                else if (randomNumber >= 0.3f)
+                else if (randomNumber >= 0.2f)
                 {
                     Instantiate(_powerups[0], position, Quaternion.identity);
                 }

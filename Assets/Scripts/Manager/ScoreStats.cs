@@ -5,7 +5,7 @@ using UnityEngine;
 public static class ScoreStats 
 {
     private static int _previousScore, _highscore;
-    private static float _mouseSens = 2.0f;
+    private static float _mouseSens = 1.0f;
 
     public static int PreviousScore 
     {

@@ -90,7 +90,7 @@ public class Player : MonoBehaviour, IDamageable
         //     Cursor.lockState = CursorLockMode.Locked;
         // }
 
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire)
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _nextFire || Input.GetMouseButtonDown(0) && Time.time > _nextFire)
         {
             _nextFire = Time.time + _fireRate;
             GameObject bubble = Instantiate(_bubbleBullet, transform.position, transform.localRotation);
@@ -98,7 +98,7 @@ public class Player : MonoBehaviour, IDamageable
             bubble.transform.parent = _bubbleContainer.transform;
         }
 
-        if (Input.GetKeyDown(KeyCode.F) && _canFireHoming == true)
+        if (Input.GetKeyDown(KeyCode.F) && _canFireHoming == true || Input.GetMouseButtonDown(1) && _canFireHoming == true)
         {
             _canFireHoming = false;
             Instantiate(_homingBubble, transform.position, transform.localRotation);        
